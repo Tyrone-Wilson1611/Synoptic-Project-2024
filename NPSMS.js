@@ -25,6 +25,7 @@ const client = new twilio.Twilio(accountSid, authToken);
 
 const twilioPhoneNumber = '';
 const myPhoneNumber = '447401105231';
+const JamiePhoneNumber = '447575202880';
 
 
 //method to create message.//

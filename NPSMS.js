@@ -27,7 +27,7 @@ const twilioPhoneNumber = '';
 const myPhoneNumber = '447401105231';
 const jamiePhoneNumber = '447575202880';
 const tyronePhoneNumber = '447939105014';
-const norbertPhoneNumber =
+const norbertPhoneNumber = '447592797548';
 
 
 //method to create message.//

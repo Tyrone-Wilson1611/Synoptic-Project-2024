@@ -1,6 +1,11 @@
+const express = require('express');
+const request = require('request');
+
+
+request.get(body);
+
 const twilio = require('twilio');
-api.openweathermap.org/data/2.5/forecast?
-lat={'12.5777'}&lon={'106.9349'}&appid={'331e13a2241a062eec05fdd320fad13b'}
+api.openweathermap.org/data/2.5/forecast?lat=12.57&lon=106.9&appid=331e13a2241a062eec05fdd320fad13b;
 //code to request data using API weather
 
 

@@ -8,7 +8,7 @@ import fetch from 'node-fetch';
 //function to determine if weather is extreme
 //function weatherupdate(URL, ){
 
-}
+
 //function extremeWeather(){
 //     if (blablabla){
 //         return true;
@@ -34,12 +34,12 @@ const sendSms = async (myPhoneNumber, message) =>{
     const apiKey = '4B1D7004-C2C2-2CEA-D49E-5C8406E03346'
 
     const data = {
-        messages: [
+        "messages": [
         {
-            source: 'nodejs',
-            from:  'NPSMS Service',
-            body: message,
-            to: myPhoneNumber,
+            "to": myPhoneNumber,
+            "source": 'sdk',
+            "body": message
+            
         }
         ]
     };

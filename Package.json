@@ -1,0 +1,14 @@
+{
+    "name": "NP SMS SERVICE",
+    "version": "1.0.0",
+    "description": "",
+    "main": "NPSMS.mjs",
+    "type": "module",
+    "scripts": {
+      "start": "node NPSMS.mjs"
+    },
+    "dependencies": {
+      "node-fetch": "^3.0.0"
+    }
+  }
+  

@@ -29,10 +29,13 @@ const norbertPhoneNumber = '447592797548';
 message = 'This is a test, hopefully this works';
 
 
+const message = 'This is a test, hopefully this works';
+
+
 //chnaged sms api service to clicksend, this async function 
 const sendSms = async (myPhoneNumber, message) =>{
-    const username = 'oliverfawkesg@gmail.com';
-    const apikey = '4B1D7004-C2C2-2CEA-D49E-5C8406E03346'
+    const username = 'ollieSMS';
+    const apiKey = '4B1D7004-C2C2-2CEA-D49E-5C8406E03346'
 
     const data = {
         messages: [
@@ -49,16 +52,20 @@ const sendSms = async (myPhoneNumber, message) =>{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Basic ${Buffer.from(`{username}:${apiKey}`).toString(`base64`)}`
+            'Authorization': `Basic ${Buffer.from(`${username}:${apiKey}`).toString(`base64`)}`
     },
     body: JSON.stringify(data)
-     });
+    });
 
+    if(!response.ok){
+        const error = await response.json();
+        console.error('Error', error)
+    } else{
+        const result = await response.json();
+        console.log("sms sent", result);
+    }
 
-    const result = await response.json():
-    console.log("sms sent", result);
 };
 
     
 sendSms(myPhoneNumber, message);
-

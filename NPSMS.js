@@ -56,7 +56,9 @@ const sendSms = async (myPhoneNumber, message) =>{
 
 
     const result = await response.json():
-    console.log("sms sent", result)
+    console.log("sms sent", result);
+};
 
-
+    
+sendSms(myPhoneNumber, message);
 

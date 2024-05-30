@@ -64,6 +64,8 @@ const sendSms = async (myPhoneNumber, message) =>{
         ]
     };
 
+    //initialize a http request and return a promise
+    //parts of this code can be found on the clicksend docs web page.
     const response = await fetch('https://rest.clicksend.com/v3/sms/send',{
         method: 'POST',
         headers: {

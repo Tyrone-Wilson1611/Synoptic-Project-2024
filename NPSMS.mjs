@@ -69,7 +69,7 @@ function checks(forecast) {
      //console.log(avgWindSpeed+'KPH : Average wind speed in the next 12 hours');
      //console.log(expectedRainfall +'mm of rain expected in the next 12 hours');
 
-    messageFunction(testPhoneNumber,'Temp: ' + avgTemp + '. Wind: ' + avgWindSpeed + '. Rain: ' + expectedRainfall);
+     messageFunction(testPhoneNumber,'Nu Pgoal Daily weather service. Average temperature today: ' + avgTemp + '. Average wind speed : ' + avgWindSpeed + '. And expected rainfall is around: ' + expectedRainfall);
 
 }
 

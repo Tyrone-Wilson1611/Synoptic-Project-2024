@@ -1,12 +1,32 @@
 import fetch from 'node-fetch';
 
-//const URL = 'api.openweathermap.org/data/2.5/forecast?lat=12.57&lon=106.9&appid=331e13a2241a062eec05fdd320fad13b'
+
+//if you want to alter or add any specifics go to openweather api documentation and go to 5 day/3 houlry api, there it will tell you any attributes you can add to the data.
+//This url will open a page that returns weather info for location lat 12.57 and long 106.9 which is the village hall of pu ngaol i believe, if im wrong feel free to change you can test by putting into your web broweser.
+//just dont chnage the appid as this is a speific key.
+const URL = "https://api.openweathermap.org/data/2.5/forecast?lat=12.57&lon=106.9&appid=331e13a2241a062eec05fdd320fad13b"
+
 //code to request data using API weather
 
 
+function getWeatherData(url) {
+    fetch(url).then(response => {
+        if (!response.ok) {
+            throw new Error(`error: ${error}`);
+        }
+                   return response.json();
+                }).then(weatherData => {
 
-//function to determine if weather is extreme
-//function weatherupdate(URL, ){
+        // weather data is returned 'pretty print' i.e. is formatted easier to read  (even though nobody will ever know).
+        //basically indents (value 4) for each hierarchical level, and includes all objects wether or not they have data.
+                    console.log(JSON.stringify(weatherData, null, 4));
+                })
+                .catch(error => {
+                    console.error('Error fetching weather data:', error);
+                });
+        }
+
+getWeatherData(URL)
 
 
 //function extremeWeather(){

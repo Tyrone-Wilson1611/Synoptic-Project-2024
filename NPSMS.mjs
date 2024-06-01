@@ -9,7 +9,7 @@
 
 
 import fetch from 'node-fetch';
-
+import {getallPhoneNums} from './database.mjs';
 
 const dayForescastURL = "https://api.openweathermap.org/data/2.5/forecast?lat=12.57&lon=106.9&cnt=4&appid=331e13a2241a062eec05fdd320fad13b&units=metric";
 const severeWeatherCheckURL = "https://api.openweathermap.org/data/2.5/forecast?lat=12.57&lon=106.9&cnt=1&appid=331e13a2241a062eec05fdd320fad13b&units=metric";
@@ -43,9 +43,6 @@ function getThreeHourlyWeatherData(url) {
 getThreeHourlyWeatherData(severeWeatherCheckURL)
 
 
-//NOT DONT YET// but does work as intended. 
-// for this function so far, get some essential properties, then find the avergage or expected vaulues and print to screen (just for testing purposes)
-// we will later all the SMS function from inside this function, passing through the message parameter as either a body or string formated however we feel.//
 function checks(forecast) {
     var hwindSpeed;
     var htemp;
@@ -74,7 +71,7 @@ function checks(forecast) {
     // console.log(avgWindSpeed+'KPH : Average wind speed in the next 12 hours');
     // console.log(expectedRainfall +'mm of rain expected in the next 12 hours');
 
-     messageFunction(testPhoneNumber,'Nu Pgoal Daily weather update. Average temperature today: ' + avgTemp + '°C  .Average wind speed : ' + avgWindSpeed + ' KPH .And expected rainfall is around: ' + expectedRainfall +'mm. Any other properties we want ot add.....' );
+     messageFunction('Nu Pgoal Daily weather update. Average temperature today: ' + avgTemp + '°C  .Average wind speed : ' + avgWindSpeed + ' KPH .And expected rainfall is around: ' + expectedRainfall +'mm. Any other properties we want ot add.....' );
 
 }
 
@@ -85,12 +82,15 @@ function severeWeatherCheck(weather){
     var hwindSpeed = weather.wind.speed; 
     var time = weather.dt_txt;
     if(hrainfall >= 50){ 
+        // messageFunction('Rain: ' + hrainfall + 'at :' + time);
          messageFunction(testPhoneNumber,'Rain: ' + hrainfall + 'at :' + time);
     }
     else if(htemp >= 35) { 
+       // messageFunction('Temp: ' + htemp + 'at :' + time);
         messageFunction(testPhoneNumber,'Temp: ' + htemp + 'at :' + time);
     }
     else if(hwindSpeed >= 30) { 
+       // messageFunction('Wind Speed: ' + hwindSpeed + 'at :' + time);
         messageFunction(testPhoneNumber, 'Wind Speed: ' + hwindSpeed + 'at :' + time);
     }
     else{
@@ -106,42 +106,51 @@ const norbertPhoneNumber = '447592797548';
 const testPhoneNumber = '61411111111';
 
 
-const messageFunction = async (phoneNumber, message) =>{
-    //ollies account authentiation details
+const messageFunction = async (message) => {
+    // Ollie's account authentication details
     const username = 'ollieSMS';
-    const apiKey = '4B1D7004-C2C2-2CEA-D49E-5C8406E03346'
-    //can add a 'from' if we want(we should). 
-    const data = {
-        "messages": [
-        {
-            "to": phoneNumber,
-           // "from": 'Pu Ngaol SMS service',
-            "source": 'sdk',
-            "body": message
-        }
-        ]
-    };
-    const response = await fetch('https://rest.clicksend.com/v3/sms/send',{
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Basic ${Buffer.from(`${username}:${apiKey}`).toString(`base64`)}`
-    },
-    body: JSON.stringify(data)
-    });
-    
-    if(!response.ok){
-        const error = await response.json();
-    console.error('Error', error)} 
-    else{
-        const result = await response.json();
-    console.log("sms sent", result);}
-    console.log(JSON.stringify(data))
-};
+    const apiKey = '4B1D7004-C2C2-2CEA-D49E-5C8406E03346';
+    // Can add a 'from' if we want (we should).
 
+    getallPhoneNums.forEach(async phoneNumber => {
+        const data = {
+            "messages": [
+                {
+                    "to": phoneNumber,
+                    // "from": 'Pu Ngaol SMS service',
+                    "source": 'sdk',
+                    "body": message
+                }
+            ]
+        };
+
+        try {
+            const response = await fetch('https://rest.clicksend.com/v3/sms/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Basic ${Buffer.from(`${username}:${apiKey}`).toString(`base64`)}`
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                const error = await response.json();;
+                console.log(error)
+            } else {
+                const result = await response.json();
+                console.log(result)
+            }
+        } catch (error) {
+            console.log(err)
+        }
+    });
+};
 
 //setInterval(() => getThreeHourlyWeatherData(severeWeatherCheckURL), 1000 * 60 * 60 * 3);
 //setInterval(() => getDailyWeatherData(dayForescastURL), 1000 * 60 * 60 * 24);
 
 
+//extra tests
 //messageFunction(testPhoneNumber, message);
+//messageFunction()

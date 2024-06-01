@@ -1,7 +1,6 @@
 //Things to do 
 // 1 - write the code to send messages to every phone number in a data structure.
 // 2 - change the weather data retrievel from an array to a hasmap to aid in use in other functions (luxury not needed, can slightly make code more efficient if we reuse it alot whoch we arent at the moment)
-// 3 - write a funtion to decrypt phone numbers. not exactly sure on how to do this. i guess we encrypt on the DBMS and decrypt on the backend
 
 //notes 
 // if you want to alter or add any specifics go to openweather api documentation and go to 5 day/3 houlry api, there it will tell you any attributes you can add to the data.

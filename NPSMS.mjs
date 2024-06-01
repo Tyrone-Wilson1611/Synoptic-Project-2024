@@ -123,26 +123,22 @@ const messageFunction = async (message) => {
                 }
             ]
         };
-
-        try {
-            const response = await fetch('https://rest.clicksend.com/v3/sms/send', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Basic ${Buffer.from(`${username}:${apiKey}`).toString(`base64`)}`
-                },
-                body: JSON.stringify(data)
-            });
-
-            if (!response.ok) {
-                const error = await response.json();;
-                console.log(error)
-            } else {
-                const result = await response.json();
-                console.log(result)
-            }
-        } catch (error) {
-            console.log(err)
+    
+        const response = await fetch('https://rest.clicksend.com/v3/sms/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Basic ${Buffer.from(`${username}:${apiKey}`).toString(`base64`)}`
+            },
+            body: JSON.stringify(data)
+        });
+    
+        if (!response.ok) {
+            const error = await response.json();
+            console.log(error);
+        } else {
+            const result = await response.json();
+            console.log(result);
         }
     });
 };

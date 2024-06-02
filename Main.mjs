@@ -1,6 +1,6 @@
 
 import {messageFunction, singleMessageFunction} from './message.mjs'
-import {getThreeHourlyWeatherData, getDailyWeatherData} from './Weather.mjs'
+import {isCurrentWeatherSevere, getThreeHourlyWeatherData, getDailyWeatherData} from './Weather.mjs'
 
 
 //weather messsaging functions
@@ -9,7 +9,9 @@ const severeWeatherCheckURL = "https://api.openweathermap.org/data/2.5/forecast?
 
 function getweatherthreehourlyandsendmessagetosingle(){
     getThreeHourlyWeatherData(severeWeatherCheckURL);
-    singleMessageFunction(getThreeHourlyWeatherData)
+    if(isCurrentWeatherSevere){
+        singleMessageFunction(getThreeHourlyWeatherData);
+    }
 }
 function getweatherdailyandsendmessagetosingle(){
     getDailyWeatherData(dayForescastURL);
@@ -18,14 +20,18 @@ function getweatherdailyandsendmessagetosingle(){
 
 function getweatherthreehourlyandsendmessagetoall(){
     getThreeHourlyWeatherData(severeWeatherCheckURL);
-    messageFunction(getThreeHourlyWeatherData)
+    if(isCurrentWeatherSevere){
+        messageFunction(getThreeHourlyWeatherData) ; 
+    }
 }
 function getweatherdailyandsendmessagetoall(){
     getDailyWeatherData(dayForescastURL);
     messageFunction(getDailyWeatherData)
 }
 
+getweatherthreehourlyandsendmessagetosingle()
+getweatherdailyandsendmessagetosingle()
 
 
-//setInterval(() => getThreeHourlyWeatherData(severeWeatherCheckURL), 1000 * 60 * 60 * 3);
-//setInterval(() => getDailyWeatherData(dayForescastURL), 1000 * 60 * 60 * 24);
+//setInterval(() => getweatherthreehourlyandsendmessagetosingle(), 1000 * 60 * 60 * 3);
+//setInterval(() => getweatherdailyandsendmessagetosingle(), 1000 * 60 * 60 * 24);

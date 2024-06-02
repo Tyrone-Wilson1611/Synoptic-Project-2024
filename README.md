@@ -1,3 +1,4 @@
-To run NPSMS.mjs file, you must install a few packages, these can be found on the clicksend website, this is only if you want to test the phone capabilities. if you do want to test the phonesms you can but it costs 4 pence per message so just bear in mind. i added a test phone so that you can see the console confirmation of a message being sent while not being charged for testing purposes. and packages with info on how to use can be found at the top of the code files.
+To run your gonna have to install a few packages, i will list them here when i get the chance.
+
 
 Also Database.mjs might not be necessary but it can be used to insert data into the database via the server end appliction rather than the DBMS, it should store the phone nums un the datbase encrypted and be ablt to decrypt when recieveing.

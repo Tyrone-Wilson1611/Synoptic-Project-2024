@@ -1,10 +1,6 @@
 import fetch from 'node-fetch';
 
-const dayForescastURL = "https://api.openweathermap.org/data/2.5/forecast?lat=12.57&lon=106.9&cnt=4&appid=331e13a2241a062eec05fdd320fad13b&units=metric";
-const severeWeatherCheckURL = "https://api.openweathermap.org/data/2.5/forecast?lat=12.57&lon=106.9&cnt=1&appid=331e13a2241a062eec05fdd320fad13b&units=metric";
-
-
-function getDailyWeatherData(url) {
+export function getDailyWeatherData(url) {
     fetch(url)
         .then(response => {
             if (!response.ok) {
@@ -15,10 +11,8 @@ function getDailyWeatherData(url) {
             checks(weatherData.list); }).catch(error => {
             console.error('Error fetching weather data:', error);});
 }
-getDailyWeatherData(dayForescastURL)
 
-
-function getThreeHourlyWeatherData(url) {
+export function getThreeHourlyWeatherData(url) {
     fetch(url)
         .then(response => {
             if (!response.ok) {
@@ -29,8 +23,6 @@ function getThreeHourlyWeatherData(url) {
             severeWeatherCheck(weatherData.list[0]); }).catch(error => {
             console.error('Error fetching weather data:', error);});
 }
-getThreeHourlyWeatherData(severeWeatherCheckURL)
-
 
 function checks(forecast) {
     var hwindSpeed;
@@ -55,12 +47,7 @@ function checks(forecast) {
     avgWindSpeed = Math.round(avgWindSpeed * 10)/10;
     expectedRainfall = Math.round(expectedRainfall);
 
-    //testing//
-    // console.log(avgTemp+' degrees Celsius : The average temp in the next 12 hours');
-    // console.log(avgWindSpeed+'KPH : Average wind speed in the next 12 hours');
-    // console.log(expectedRainfall +'mm of rain expected in the next 12 hours');
-
-     messageFunction('Nu Pgoal Daily weather update. Average temperature today: ' + avgTemp + '°C  .Average wind speed : ' + avgWindSpeed + ' KPH .And expected rainfall is around: ' + expectedRainfall +'mm. Any other properties we want ot add.....' );
+    return 'Nu Pgoal Daily weather update. Average temperature today: ' + avgTemp + '°C  .Average wind speed : ' + avgWindSpeed + ' KPH .And expected rainfall is around: ' + expectedRainfall +'mm. Any other properties we want ot add.....' ;
 
 }
 
@@ -71,16 +58,13 @@ function severeWeatherCheck(weather){
     var hwindSpeed = weather.wind.speed; 
     var time = weather.dt_txt;
     if(hrainfall >= 50){ 
-        // messageFunction('Rain: ' + hrainfall + 'at :' + time);
-         messageFunction(testPhoneNumber,'Rain: ' + hrainfall + 'at :' + time);
+        return 'Rain: ' + hrainfall + 'at :' + time;
     }
     else if(htemp >= 35) { 
-       // messageFunction('Temp: ' + htemp + 'at :' + time);
-        messageFunction(testPhoneNumber,'Temp: ' + htemp + 'at :' + time);
+        return  'Temp: ' + htemp + 'at :' + time;
     }
     else if(hwindSpeed >= 30) { 
-       // messageFunction('Wind Speed: ' + hwindSpeed + 'at :' + time);
-        messageFunction(testPhoneNumber, 'Wind Speed: ' + hwindSpeed + 'at :' + time);
+        return  'Wind Speed: ' + hwindSpeed + 'at :' + time;
     }
     else{
         console.log('no severe warning for time: ' + time)

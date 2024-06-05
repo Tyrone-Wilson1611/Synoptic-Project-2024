@@ -1,4 +1,8 @@
 import fetch from 'node-fetch'; // Ensure you have node-fetch installed
+import { decryptPhoneNumber, getKey } from './encryption.mjs';
+
+
+const key = getKey();
 
 const olliePhoneNumber = '447401105231';
 const jamiePhoneNumber = '07575202880';
@@ -16,10 +20,12 @@ export const messageFunction = async (message, allphonenum) => {
     const apiKey = '4B1D7004-C2C2-2CEA-D49E-5C8406E03346';
 
     for (const phoneNumber of nums) {
+        console.log(phoneNumber)
+        console.log(decryptPhoneNumber(phoneNumber, key))
         const data = {
             "messages": [
                 {
-                    "to": phoneNumber,
+                    "to": decryptPhoneNumber(phoneNumber, key),
                     "source": 'sdk',
                     "body": message
                 }
@@ -60,6 +66,8 @@ export const singleMessageFunction = async (message) => {
             }
         ]
     };
+
+    
 
     const response = await fetch('https://rest.clicksend.com/v3/sms/send', {
         method: 'POST',

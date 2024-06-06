@@ -1,46 +1,73 @@
-import { manualAddPhoneNum, getallPhoneNums } from './database.mjs';
-import { messageFunction, singleMessageFunction } from './message.mjs';
-import { checks, isCurrentWeatherSevere, getThreeHourlyWeatherData, getDailyWeatherData } from './Weather.mjs';
+import {insertphonenum, getallPhoneNums } from './database.mjs';
+import {messageFunction, singleMessageFunction } from './message.mjs';
+import {severeWeatherCheck, dailyWeatherChecks, getWeatherData} from './Weather.mjs';
 
-manualAddPhoneNum('447401105231');
-manualAddPhoneNum('61411111111');
+const DailyWeatherName = 'WeatherUPD'
+const SevereWeatherName = 'WeatherALRT'
 
 
-const dayForecastURL = "https://api.openweathermap.org/data/2.5/forecast?lat=12.57&lon=106.9&cnt=4&appid=331e13a2241a062eec05fdd320fad13b&units=metric";
-const severeWeatherCheckURL = "https://api.openweathermap.org/data/2.5/forecast?lat=12.57&lon=106.9&cnt=1&appid=331e13a2241a062eec05fdd320fad13b&units=metric";
-
-async function getweatherthreehourlyandsendmessagetosingle() {
-    const weatherData = await getThreeHourlyWeatherData(severeWeatherCheckURL);
-    if (isCurrentWeatherSevere(weatherData)) {
-         singleMessageFunction(weatherData);
+//Weather and message function calling
+async function severeMessageToSingle() {
+    const weatherData = await getWeatherData();
+    if (severeWeatherCheck(weatherData) != null && weatherData!= null) {
+        const message = severeWeatherCheck(weatherData);
+        singleMessageFunction(message, SevereWeatherName);
     }
 }
 
-async function getweatherdailyandsendmessagetosingle() {
-    const weatherData = await getDailyWeatherData(dayForecastURL);
-    singleMessageFunction(weatherData);
-}
-
-async function getweatherthreehourlyandsendmessagetoall() {
-    const allNums = await getallPhoneNums();
-    console.log('All phone numbers (three hourly):', allNums);
-    const weatherData = await getThreeHourlyWeatherData(severeWeatherCheckURL);
-    if (isCurrentWeatherSevere(weatherData)) {
-         messageFunction(weatherData, allNums);
-    }
-}
-
-async function getweatherdailyandsendmessagetoall() {
-    const allNums = await getallPhoneNums();
-    console.log('All phone numbers (daily):', allNums);
-    const weatherData = await getDailyWeatherData(dayForecastURL);
+async function dailyMessageToSingle() {
+    const weatherData = await  getWeatherData();
     if (weatherData != null) {
-        const message = checks(weatherData);
-        messageFunction(message, allNums);
+        const message = dailyWeatherChecks(weatherData);
+        singleMessageFunction(message, DailyWeatherName);
     }
 }
 
-getweatherdailyandsendmessagetoall();
+
+async function severeMessageToAll() {
+    try {
+        const allNums = await getallPhoneNums();
+        const weatherData = await getWeatherData();
+        if (weatherData != null) {
+            const severeWeatherMessage = severeWeatherCheck(weatherData);
+            if (severeWeatherMessage != null) {
+                messageFunction(severeWeatherMessage, allNums, SevereWeatherName);
+            }
+        }
+    } catch (error) {
+        console.error("Error sending severe weather message:", error);
+    }
+}
+
+
+async function dailyMessageToAll() {
+    try {
+        const allNums = await getallPhoneNums();
+        const weatherData = await getWeatherData();
+
+        if (weatherData != null) {
+            const dailyMessage = dailyWeatherChecks(weatherData);
+            messageFunction(dailyMessage, allNums, DailyWeatherName);
+        }
+    } catch (error) {
+        console.error("Error sending daily weather message:", error);
+    }
+}
+
+
+
+insertphonenum('447401105231');
+//insertphonenum('447939105014');
+//insertphonenum('447592797548');
+
+
+
+dailyMessageToAll();
+//console.log(getallPhoneNums());
 // getweatherthreehourlyandsendmessagetosingle();
 // getweatherdailyandsendmessagetosingle();
 // getweatherthreehourlyandsendmessagetoall();
+
+
+// every 3 hours run this code.
+//setInterval(getweatherthreehourlyandsendmessagetoall(), 1000*60*60 *3)

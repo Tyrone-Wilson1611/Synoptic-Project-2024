@@ -5,7 +5,6 @@ To run your gonna have to install a few packages, i will list them here when i g
         "npm": "^10.8.1",
         "pg": "^8.11.5",
         "request": "^2.88.2",
-        "simple-crypto-js": "^3.0.1",
         "typescript"
 
 

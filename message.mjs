@@ -1,5 +1,4 @@
 //file to send SMS's using the clicksend api//
-
 import fetch from 'node-fetch'; 
 import { decryptPhoneNumber, ourKey} from './encryption.mjs';
 
@@ -10,7 +9,7 @@ const apiKey = '4B1D7004-C2C2-2CEA-D49E-5C8406E03346';
 
 //function to send message to an array of people via SMS//
 //Takes in message as a parameter so that it could be used for other functions in the future other than just weather//
-export const messageFunction = async (message, allphonenum, from) => {
+export const messageFunction = async (message, allphonenum) => {
     if (allphonenum.length == 0) {
         console.log('empty');
         return;}
@@ -24,7 +23,7 @@ export const messageFunction = async (message, allphonenum, from) => {
                     "to": decryptPhoneNumber(phoneNumber, ourKey),
                     "source": 'sdk',
                     "body": message,
-                    "from": from
+                   // "from": from
                 }
             ]
         };
@@ -52,14 +51,13 @@ export const messageFunction = async (message, allphonenum, from) => {
 
 
 //function that sends an message to a phone number via SMS//
-export const singleMessageFunction = async (message, from) => {
+export const singleMessageFunction = async (message, phoneNumber) => {
     const data = {
         "messages": [
             {
-                "to": testPhoneNumber,
+                "to": phoneNumber,
                 "source": 'sdk',
                 "body": message,
-                "from": from
             }
         ]
     };

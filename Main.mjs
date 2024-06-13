@@ -1,25 +1,34 @@
 import {insertphonenum, getallPhoneNums } from './database.mjs';
 import {messageFunction, singleMessageFunction } from './message.mjs';
 import {severeWeatherCheck, dailyWeatherChecks, getWeatherData} from './Weather.mjs';
-
-const DailyWeatherName = 'WeatherUPD'
-const SevereWeatherName = 'WeatherALRT'
+import { insertWeatherCondition } from './database.mjs';
+const olliepnum = '07401105231';
 
 
 //Weather and message function calling
-async function severeMessageToSingle() {
-    const weatherData = await getWeatherData();
-    if (severeWeatherCheck(weatherData) != null && weatherData!= null) {
-        const message = severeWeatherCheck(weatherData);
-        singleMessageFunction(message, SevereWeatherName);
+async function severeMessageToSingle(phoneNum) {
+    try {
+        const weatherData = await getWeatherData();
+        if (weatherData) {
+            const severeMessage = severeWeatherCheck(weatherData);
+            if (severeMessage) {
+                singleMessageFunction(severeMessage, phoneNum);
+            }
+        }
+    } catch (err) {
+        console.error('ERROR sending severe message:', err);
     }
 }
 
-async function dailyMessageToSingle() {
-    const weatherData = await  getWeatherData();
-    if (weatherData != null) {
-        const message = dailyWeatherChecks(weatherData);
-        singleMessageFunction(message, DailyWeatherName);
+async function dailyMessageToSingle(phoneNum) {
+    try {
+        const weatherData = await getWeatherData();
+        if (weatherData) {
+            const dailyMessage = dailyWeatherChecks(weatherData);
+            singleMessageFunction(dailyMessage, phoneNum);
+        }
+    } catch (err) {
+        console.error('ERROR sending daily message:', err);
     }
 }
 
@@ -31,7 +40,8 @@ async function severeMessageToAll() {
         if (weatherData != null) {
             const severeWeatherMessage = severeWeatherCheck(weatherData);
             if (severeWeatherMessage != null) {
-                messageFunction(severeWeatherMessage, allNums, SevereWeatherName);
+                messageFunction(severeWeatherMessage, allNums);
+                console.log(severeWeatherMessage)
             }
         }
     } catch (error) {
@@ -44,30 +54,22 @@ async function dailyMessageToAll() {
     try {
         const allNums = await getallPhoneNums();
         const weatherData = await getWeatherData();
-
         if (weatherData != null) {
             const dailyMessage = dailyWeatherChecks(weatherData);
-            messageFunction(dailyMessage, allNums, DailyWeatherName);
+            console.log(dailyMessage)
+            messageFunction(dailyMessage, allNums);
         }
     } catch (error) {
         console.error("Error sending daily weather message:", error);
     }
 }
 
+const message4 = 'HIGH WIND WARNING: Dangerously high wind speed expected at: 9:00' ;
 
+singleMessageFunction(message4, '447401105231')
+dailyMessageToSingle(olliepnum);
+severeMessageToSingle(olliepnum)
 
-insertphonenum('447401105231');
-//insertphonenum('447939105014');
-//insertphonenum('447592797548');
+//setInterval(dailyMessageToAll, 1000 * 60 * 60 * 24)
+//setInterval(severeMessageToAll, 1000 * 60 * 60 * 3)
 
-
-
-dailyMessageToAll();
-//console.log(getallPhoneNums());
-// getweatherthreehourlyandsendmessagetosingle();
-// getweatherdailyandsendmessagetosingle();
-// getweatherthreehourlyandsendmessagetoall();
-
-
-// every 3 hours run this code.
-//setInterval(getweatherthreehourlyandsendmessagetoall(), 1000*60*60 *3)

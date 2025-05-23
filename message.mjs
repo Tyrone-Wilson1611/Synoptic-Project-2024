@@ -2,7 +2,7 @@
 import fetch from 'node-fetch'; 
 import { decryptPhoneNumber, ourKey} from './encryption.mjs';
 
-//authoirzation data
+//authoirzation dat
 const username = '"
 const apiKey = '';
 

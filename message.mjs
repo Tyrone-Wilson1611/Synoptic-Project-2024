@@ -3,8 +3,8 @@ import fetch from 'node-fetch';
 import { decryptPhoneNumber, ourKey} from './encryption.mjs';
 
 //authoirzation data
-const username = 'ollieSMS';
-const apiKey = '4B1D7004-C2C2-2CEA-D49E-5C8406E03346';
+const username = '"
+const apiKey = '';
 
 
 //function to send message to an array of people via SMS//
